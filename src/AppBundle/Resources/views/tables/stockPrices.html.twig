@@ -1,0 +1,17 @@
+<div class="col-md-8">
+    <h3 class="text-center">Current stock prices</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th class="text-center">Symbol</th>
+            <th class="text-center">Stock name</th>
+            <th class="text-center">Current price</th>
+        </tr>
+        {% for stock in data %}
+            <tr>
+                <td class="text-center">{{ stock.symbol }}</td>
+                <td class="text-center">{{ stock.name }}</td>
+                <td class="text-center">{{ stock.price|round(3, 'floor') }} $</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>

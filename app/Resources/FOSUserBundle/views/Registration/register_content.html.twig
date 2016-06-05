@@ -1,6 +1,10 @@
 <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
-    {{ form_widget(form) }}
-    <div>
+    <div class="col-md-6 col-md-offset-1">
+    <h3 class="text-center">Register new user</h3>
+        {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+        {{ form_widget(form) }}
+
         <input type="submit" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}" />
+        <a class="btn btn-success" href="{{ path('homepage') }}">Back to homepage</a>
     </div>
 </form>

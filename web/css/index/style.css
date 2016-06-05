@@ -5,3 +5,17 @@
 .buttonPad {
     margin-left: 5px;
 }
+
+.buttonTopMargin {
+    margin-top: 20px;
+}
+
+.biggerText {
+    font-size: 18px;
+    padding-right: 15px;
+    padding-top: 5px;
+}
+
+.topMargin {
+    margin-top: 50px;
+}

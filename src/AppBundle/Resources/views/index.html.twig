@@ -1,31 +1,34 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
-
     <div class="row">
-        <div class="col-md-8">
-            <h1 class="text-center">Welcome to MarketMadness!</h1>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked topMargin">
+                <li>
+                    <a class="btn btn-success buttonTopMargin" href="{{ path('fos_user_profile_show') }}">
+                        New portfolio
+                    </a>
+                </li>
+                <li>
+                    <a class="btn btn-success buttonTopMargin" href="{{ path('fos_user_security_logout') }}">
+                        Active portfolios
+                    </a>
+                </li>
+            </ul>
         </div>
-    </div>
+        {% else %}
+            <div class="row">
+                <div class="col-md-8">
+                    <h1 class="text-center">Welcome to MarketMadness!</h1>
+                </div>
+            </div>
+        {% endif %}
 
-    <div class="row">
-        <div class="col-md-6 col-md-offset-1">
-            <h3 class="text-center">Current prices</h3>
-            <table class="table table-bordered">
-                <tr>
-                    <th class="text-center">Symbol</th>
-                    <th class="text-center">Stock name</th>
-                    <th class="text-center">Current price</th>
-                </tr>
-                {% for stock in data %}
-                        <tr>
-                            <td class="text-center">{{ stock.symbol }}</td>
-                            <td class="text-center">{{ stock.name }}</td>
-                            <td class="text-center">{{ stock.price|round(3, 'floor') }} $</td>
-                        </tr>
-                {% endfor %}
-            </table>
+        <div class="row">
+            {% include('AppBundle:tables:stockPrices.html.twig') %}
         </div>
+
     </div>
 
 {% endblock %}
