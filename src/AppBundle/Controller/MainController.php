@@ -19,11 +19,7 @@ class MainController extends Controller
             ->getRepository("AppBundle:Stock")
             ->getAllSymbols();
 
-        $yahooApi = $this->get('yahoo_api');
-        $data = $yahooApi->getPrices($stockSymbols);
-
-//        $data = json_decode($data, true);
-//        foreach ($data['list']['resources'] as )
+        $data = $this->get('data_getter')->getData($stockSymbols, ['price', 'name', 'symbol']);
 
         return ['data' => $data];
     }

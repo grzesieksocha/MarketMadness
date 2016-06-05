@@ -14,3 +14,7 @@ services:
 
     guzzle:
         class: GuzzleHttp\Client
+
+    data_getter:
+        class: AppBundle\Services\DataGetter
+        arguments: ["@yahoo_api"]

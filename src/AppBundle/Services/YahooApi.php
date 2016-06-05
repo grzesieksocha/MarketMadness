@@ -22,16 +22,4 @@ class YahooApi
         $data = $this->client->request('GET', $query_url)->getBody()->getContents();
         return $data;
     }
-
-    public function getPrices(array $stocks)
-    {
-        $data = $this->getDetails($stocks);
-        $data = json_decode($data, true);
-        $prices = [];
-        foreach ($data['list']['resources'] as $stock)
-        {
-            $prices[$stock['resource']['fields']['symbol']] = $stock['resource']['fields']['price'];
-        }
-        return $prices;
-    }
 }
