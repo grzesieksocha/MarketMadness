@@ -1,0 +1,50 @@
+<?php
+
+namespace AppBundle\Entity;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="portfolio")
+ */
+class Portfolio
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * Cash hold in the portfolio in cents.
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $cashAmount;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Holding", mappedBy="portfolio")
+     */
+    private $holdings;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Transaction", mappedBy="portfolio")
+     */
+    private $transactions;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="portfolios")
+     */
+    private $user;
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+}

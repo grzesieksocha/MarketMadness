@@ -1,0 +1,44 @@
+<?php
+
+
+namespace AppBundle\Entity;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="transaction")
+ */
+class Transaction
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Portfolio", inversedBy="transactions")
+     */
+    private $portfolio;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $stockSymbol;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $stockQuantity;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $stockPrice;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $transactionType;
+}
