@@ -32,7 +32,7 @@ class User extends BaseUser
 
     public function addPortfolio(Portfolio $portfolio)
     {
-        $contact->setPortfolio($this);
+        $portfolio->setPortfolio($this);
         $this->portfolios[] = $portfolio;
     }
 

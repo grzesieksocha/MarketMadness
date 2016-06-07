@@ -3,20 +3,7 @@
 {% block body %}
     <div class="row">
         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-        <div class="col-md-2">
-            <ul class="nav nav-pills nav-stacked topMargin">
-                <li>
-                    <a class="btn btn-success buttonTopMargin" href="{{ path('fos_user_profile_show') }}">
-                        New portfolio
-                    </a>
-                </li>
-                <li>
-                    <a class="btn btn-success buttonTopMargin" href="{{ path('fos_user_security_logout') }}">
-                        Active portfolios
-                    </a>
-                </li>
-            </ul>
-        </div>
+            {% include('AppBundle:include:sideBar.html.twig') %}
         {% else %}
             <div class="row">
                 <div class="col-md-8">
@@ -26,7 +13,7 @@
         {% endif %}
 
         <div class="row">
-            {% include('AppBundle:tables:stockPrices.html.twig') %}
+            {% include('AppBundle:include:stockPrices.html.twig') %}
         </div>
 
     </div>

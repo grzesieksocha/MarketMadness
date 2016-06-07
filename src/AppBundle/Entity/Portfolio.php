@@ -18,8 +18,6 @@ class Portfolio
     private $id;
 
     /**
-     * Cash hold in the portfolio in cents.
-     *
      * @ORM\Column(type="integer")
      */
     private $cashAmount;
