@@ -1,6 +1,24 @@
 {% extends '::base.html.twig' %}
 {% block body %}
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            {% include('AppBundle:include:sideBar.html.twig') %}
-        {% endif %}
+
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {% include('AppBundle:include:sideBar.html.twig') %}
+    {% endif %}
+    <div class="col-md-8">
+        <h3>Open a new portfolio</h3>
+        <div class="col-md-5">
+            {% form_theme form 'bootstrap_3_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+        <div class="col-md-6">
+            <p><strong>Difficulty explanation:</strong></p>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Easy:</strong> no commission charges</li>
+                <li class="list-group-item"><strong>Medium:</strong> 2% commission charges</li>
+                <li class="list-group-item"><strong>Hard:</strong> 5% commision charges</li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}

@@ -18,6 +18,11 @@ class Portfolio
     private $id;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $difficulty;
+    
+    /**
      * @ORM\Column(type="integer")
      */
     private $cashAmount;
@@ -68,6 +73,18 @@ class Portfolio
     public function getCashAmount()
     {
         return $this->cashAmount;
+    }
+
+    public function getDifficulty()
+    {
+        return $this->difficulty;
+    }
+
+    public function setDifficulty($difficulty)
+    {
+        $this->difficulty = $difficulty;
+
+        return $this;
     }
     
     public function addHolding(Holding $holding)

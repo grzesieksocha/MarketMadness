@@ -1,12 +1,17 @@
 <div class="col-md-2">
     <ul class="nav nav-pills nav-stacked topMargin">
         <li>
-            <a class="btn btn-success buttonTopMargin" href="{{ path('fos_user_profile_show') }}">
+            <a class="btn btn-success buttonTopMargin" href="{{ path('homepage') }}">
+                Main page
+            </a>
+        </li>
+        <li>
+            <a class="btn btn-success buttonTopMargin" href="{{ path('newPortfolio') }}">
                 New portfolio
             </a>
         </li>
         <li>
-            <a class="btn btn-success buttonTopMargin" href="{{ path('fos_user_security_logout') }}">
+            <a class="btn btn-success buttonTopMargin" href="{{ path('listPortfolios') }}">
                 Active portfolios
             </a>
         </li>
