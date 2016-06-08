@@ -1,0 +1,8 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {% include('AppBundle:include:sideBar.html.twig') %}
+    {% endif %}
+    {% include "@App/transactions/stockTable.html.twig" %}
+{% endblock %}

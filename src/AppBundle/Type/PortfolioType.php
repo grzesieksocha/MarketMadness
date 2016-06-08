@@ -19,9 +19,9 @@ class PortfolioType extends AbstractType
             ->add('name', TextType::class)
             ->add('initialCashAmount', ChoiceType::class, array(
                 'choices' => array(
-                    10000 => '10,000 $',
-                    20000 => '20,000 $',
-                    50000 => '50,000 $',
+                    1000000 => '10,000 $',
+                    2000000 => '20,000 $',
+                    5000000 => '50,000 $',
                 ),
                 'placeholder' => 'Choose your portfolio value'
             ))

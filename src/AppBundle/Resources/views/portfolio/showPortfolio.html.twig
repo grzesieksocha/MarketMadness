@@ -1,4 +1,10 @@
 {% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset("css/portfolio/listPortfolios.css") }}">
+{% endblock %}
+
 {% block body %}
 
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
@@ -6,19 +12,25 @@
     {% endif %}
     <div class="col-md-8">
         <h2>Manage <em>{{ portfolio.name }}</em></h2>
-        <h4>Difficulty: {{ portfolio.difficulty }} | Initial cash amount: {{ portfolio.initialCashAmount|number_format }} $</h4>
+        <h4>Difficulty: {{ portfolio.difficulty }} | Initial cash amount: {{ (portfolio.initialCashAmount/100)|number_format }} $</h4>
 
-        <h3>Investment return: {{ return }}%</h3>
-
+        <h3>Investment return:
+            {% if return >= 0 %}
+                <span class="green"> {{ return }}% </span></h3>
+            {% else %}
+                <span class="red"> {{ return }}% </span></h3>
+            {% endif %}
         <h3>Cash available:</h3>
-        {{ portfolio.presentCashAmount|number_format }} $
+        {{ (portfolio.presentCashAmount/100)|number_format }} $
 
-        <h3>Holdings</h3>
+        <h3>Holdings <a class="btn btn-success" href="{{ path('buyStock', {'portfolioId': portfolio.id}) }}">Buy</a></h3>
+
         {% if holdings %}
 
         {% else %}
             <p>You do not have any holdings yet!</p>
-            <p>Buy stock HERE!</p>
         {% endif %}
+
+        <h3>Recent Transactions:</h3>
     </div>
 {% endblock %}

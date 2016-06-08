@@ -27,4 +27,22 @@ class DataGetter
         }
         return $result;
     }
+
+    public function getFullData(array $stocks)
+    {
+        $data = $this->decoder($stocks);
+        $result = [];
+        $stockNumber = 0;
+        foreach ($data['list']['resources'] as $stock)
+        {
+            $result[$stockNumber] = $stock['resource']['fields'];
+            $stockNumber++;
+        }
+        return $result;
+    }
+    
+    private function decoder(array $stocks)
+    {
+        return json_decode($this->yahooApi->getDetails($stocks), true);
+    }
 }

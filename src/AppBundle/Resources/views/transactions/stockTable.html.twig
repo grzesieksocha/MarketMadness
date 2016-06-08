@@ -1,16 +1,18 @@
 <div class="col-md-8">
-    <h3 class="text-center">Current stock prices</h3>
+    <h3 class="text-center">Stocks you can buy</h3>
     <table class="table table-bordered">
         <tr>
             <th class="text-center">Symbol</th>
             <th class="text-center">Stock name</th>
             <th class="text-center">Current price</th>
+            <th class="text-center">Action</th>
         </tr>
         {% for stock in data %}
             <tr>
                 <td class="text-center"><a href="{{ path('stockDetails', {'symbol': stock.symbol}) }}">{{ stock.symbol }}</a></td>
                 <td class="text-center">{{ stock.name }}</td>
                 <td class="text-center">{{ stock.price|round(3, 'floor') }} $</td>
+                <td class="text-center"><a class="btn btn-default" href="{{ path('buySpecificStock', {'symbol': stock.symbol, 'portfolioId': portfolioId}) }}">BUY</a></td>
             </tr>
         {% endfor %}
     </table>

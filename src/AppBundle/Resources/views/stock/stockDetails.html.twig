@@ -1,0 +1,26 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {% include('AppBundle:include:sideBar.html.twig') %}
+    {% endif %}
+    <div class="col-md-5">
+    <h2>{{ stock.name }} - {{ stock.symbol }}</h2>
+    <h3>Current price: {{ stock.price|number_format(4) }} $</h3>
+    <h5>Updated on: {{ stock.utctime|date }} UTC</h5>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <strong>Recent change:</strong> {{ stock.change|number_format(3) }} ({{ stock.chg_percent|number_format(3) }}%)
+        </li>
+        <li class="list-group-item">
+            <strong>Daily high / low:</strong> {{ stock.day_high|number_format(3) }} $ / {{ stock.day_low|number_format(3) }} $
+        </li>
+        <li class="list-group-item">
+            <strong>Yearly high / low:</strong> {{ stock.year_high|number_format(3) }} $ / {{ stock.year_low|number_format(3) }} $
+        </li>
+        <li class="list-group-item">
+            <strong>More info:</strong> <a target="_blank" href="http://finance.yahoo.com/q?s={{ stock.symbol }}">Yahoo Finance</a>
+        </li>
+    </ul>
+    </div>
+{% endblock %}
