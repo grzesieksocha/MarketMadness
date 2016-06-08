@@ -1,0 +1,24 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {% include('AppBundle:include:sideBar.html.twig') %}
+    {% endif %}
+    <div class="col-md-8">
+        <h2>Manage <em>{{ portfolio.name }}</em></h2>
+        <h4>Difficulty: {{ portfolio.difficulty }} | Initial cash amount: {{ portfolio.initialCashAmount|number_format }} $</h4>
+
+        <h3>Investment return: {{ return }}%</h3>
+
+        <h3>Cash available:</h3>
+        {{ portfolio.presentCashAmount|number_format }} $
+
+        <h3>Holdings</h3>
+        {% if holdings %}
+
+        {% else %}
+            <p>You do not have any holdings yet!</p>
+            <p>Buy stock HERE!</p>
+        {% endif %}
+    </div>
+{% endblock %}

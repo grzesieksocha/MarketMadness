@@ -1,10 +1,38 @@
 {% extends '::base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset("css/portfolio/listPortfolios.css") }}">
+{% endblock %}
+
 {% block body %}
 
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         {% include('AppBundle:include:sideBar.html.twig') %}
     {% endif %}
     <div class="col-md-8">
-
+    {% if portfolios %}
+        <h2>Your active portfolios</h2>
+        <table class="table table-bordered tableMargin">
+            <tr>
+                <th>Name</th>
+                <th>Cash available</th>
+                <th>Difficulty</th>
+            </tr>
+                {% for portfolio in portfolios %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('showPortfolio', {'id': portfolio.id}) }}">
+                                {{ portfolio.name }}
+                            </a>
+                        </td>
+                        <td>{{ portfolio.presentCashAmount }}</td>
+                        <td>{{ portfolio.difficulty }}</td>
+                    </tr>
+                {% endfor %}
+        </table>
+    {% else %}
+        <h3 class="text-center">You do not have any active portfolios!</h3>
+        <h4 class="text-center">Create a  <a href="{{ path('newPortfolio') }}">NEW</a> one and play!</h4>
+    {% endif %}
     </div>
 {% endblock %}

@@ -20,13 +20,23 @@ class Portfolio
     /**
      * @ORM\Column(type="string")
      */
+    private $name;
+    
+    /**
+     * @ORM\Column(type="string")
+     */
     private $difficulty;
     
     /**
      * @ORM\Column(type="integer")
      */
-    private $cashAmount;
+    private $initialCashAmount;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $presentCashAmount;
+    
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Holding", mappedBy="portfolio")
      */
@@ -42,6 +52,17 @@ class Portfolio
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive;
+    
+    public function __construct()
+    {
+        $this->holdings = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
+    }
+    
     public function getUser()
     {
         return $this->user;
@@ -52,29 +73,53 @@ class Portfolio
         $this->user = $user;
     }
 
-    public function __construct()
+    public function getIsActive()
     {
-        $this->holdings = new ArrayCollection();
-        $this->transactions = new ArrayCollection();
+        return $this->isActive;
+    }
+
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
     }
     
     public function getId()
     {
         return $this->id;
     }
-    
-    public function setCashAmount($cashAmount)
+
+    public function getName()
     {
-        $this->cashAmount = $cashAmount;
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+    
+    public function setInitialCashAmount($initialCashAmount)
+    {
+        $this->initialCashAmount = $initialCashAmount;
 
         return $this;
     }
     
-    public function getCashAmount()
+    public function getInitialCashAmount()
     {
-        return $this->cashAmount;
+        return $this->initialCashAmount;
     }
 
+    public function getPresentCashAmount()
+    {
+        return $this->presentCashAmount;
+    }
+
+    public function setPresentCashAmount($presentCashAmount)
+    {
+        $this->presentCashAmount = $presentCashAmount;
+    }
+    
     public function getDifficulty()
     {
         return $this->difficulty;
@@ -119,5 +164,12 @@ class Portfolio
     public function getTransactions()
     {
         return $this->transactions;
+    }
+
+    public function countPortfolioReturn()
+    {
+        $return = ($this->presentCashAmount - $this->initialCashAmount) / $this->initialCashAmount * 100;
+
+        return $return;
     }
 }

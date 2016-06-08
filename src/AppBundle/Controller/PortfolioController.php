@@ -21,16 +21,35 @@ class PortfolioController extends Controller
      */
     public function listAction()
     {
-
+        $portfolios = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Portfolio')
+            ->findBy(['user' => $this->getUser()]);
+        
+        return ['portfolios' => $portfolios];
     }
 
     /**
      * @Route("/{id}", name="showPortfolio", requirements={"id": "\d+"})
      * @Template("@App/portfolio/showPortfolio.html.twig")
      */
-    public function showAction()
+    public function showAction($id)
     {
+        $portfolio = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Portfolio')
+            ->find($id);
 
+        $holdings = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Holding')
+            ->findBy(['portfolio' => $portfolio]);
+        
+        return [
+            'portfolio' => $portfolio, 
+            'holdings' => $holdings,
+            'return' => $portfolio->countPortfolioReturn()
+        ];
     }
 
     /**
@@ -49,6 +68,8 @@ class PortfolioController extends Controller
 
             $em = $this->getDoctrine()->getManager();
             $portfolio->setUser($user);
+            $portfolio->setPresentCashAmount($portfolio->getInitialCashAmount());
+            $portfolio->setIsActive(true);
             $em->persist($portfolio);
             $em->flush();
 
