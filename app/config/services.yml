@@ -18,3 +18,7 @@ services:
     data_getter:
         class: AppBundle\Services\DataGetter
         arguments: ["@yahoo_api"]
+
+    trader:
+        class: AppBundle\Services\Trader
+        arguments: ["@doctrine.orm.entity_manager"]

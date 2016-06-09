@@ -33,7 +33,7 @@ class Holding
     private $stockQuantity;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $averageBuyPrice;
     

@@ -3,11 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Portfolio;
-use AppBundle\Type\PortfolioType;
+use AppBundle\Form\PortfolioFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\CssSelector\Tests\Parser\ReaderTest;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -59,7 +58,7 @@ class PortfolioController extends Controller
     public function newAction(Request $request)
     {
         $portfolio = new Portfolio();
-        $form = $this->createForm(PortfolioType::class, $portfolio);
+        $form = $this->createForm(PortfolioFormType::class, $portfolio);
 
         $form->handleRequest($request);
 
@@ -72,6 +71,8 @@ class PortfolioController extends Controller
             $portfolio->setIsActive(true);
             $em->persist($portfolio);
             $em->flush();
+
+            $this->addFlash('success', 'New portfolio created - let\'s invest!');
 
             return $this->redirectToRoute("showPortfolio", ['id' => $portfolio->getId()]);
         }

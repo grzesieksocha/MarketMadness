@@ -33,7 +33,7 @@ class Transaction
     private $stockQuantity;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $stockPrice;
 

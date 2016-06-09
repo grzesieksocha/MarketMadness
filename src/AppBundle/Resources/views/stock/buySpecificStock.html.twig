@@ -4,6 +4,20 @@
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         {% include('AppBundle:include:sideBar.html.twig') %}
     {% endif %}
-    <h1>Here you will buy some stock!</h1>
-    {{ dump(data) }}
+    <div class="col-md-8">
+        <h3>You want to buy <strong>{{ data.name }} @ {{ data.price }} $</strong> </h3>
+        <h3>Cash available: {{ (portfolio.presentCashAmount/100)|number_format }} $</h3>
+        <h3>Maximum amount you can buy: {{ maxAmount }}</h3>
+        <div class="col-md-3">
+        {% form_theme form 'bootstrap_3_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_label(form.quantity) }}
+            {{ form_errors(form.quantity) }}
+            {{ form_widget(form.quantity, { 'attr': {'min': 0, 'max': maxAmount} }) }}
+            {{ form_end(form) }}
+
+            <a class="btn btn-success" href="{{ path('showPortfolio', {'id': portfolio.id}) }}">Back to portfolio</a>
+        </div>
+        {{ dump(data) }}
+    </div>
 {% endblock %}
