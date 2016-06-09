@@ -21,16 +21,51 @@
                 <span class="red"> {{ return }}% </span></h3>
             {% endif %}
         <h3>Cash available:</h3>
-        {{ (portfolio.presentCashAmount/100)|number_format }} $
+        {{ (portfolio.presentCashAmount/100)|number_format(2) }} $
 
         <h3>Holdings <a class="btn btn-success" href="{{ path('buyStock', {'portfolioId': portfolio.id}) }}">Buy</a></h3>
 
         {% if holdings %}
-
+            <table class="table">
+                <tr>
+                    <th>Stock symbol</th>
+                    <th>Quantity</th>
+                    <th>Average cost</th>
+                </tr>
+                {% for holding in holdings %}
+                    <tr>
+                        <td>{{ holding.stockSymbol }}</td>
+                        <td>{{ holding.stockQuantity }}</td>
+                        <td>{{ holding.averageBuyPrice|number_format(2) }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
         {% else %}
             <p>You do not have any holdings yet!</p>
         {% endif %}
 
         <h3>Recent Transactions:</h3>
+
+        {% if transactions %}
+            <table class="table">
+                <tr>
+                    <th>Stock symbol</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Transaction Type</th>
+                    <th></th>
+                </tr>
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.stockSymbol }}</td>
+                        <td>{{ transaction.stockQuantity }}</td>
+                        <td>{{ transaction.stockPrice|number_format(2) }}</td>
+                        <td>{{ transaction.transactionType }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>You do not have any transactions yet!</p>
+        {% endif %}
     </div>
 {% endblock %}

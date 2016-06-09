@@ -43,10 +43,16 @@ class PortfolioController extends Controller
             ->getDoctrine()
             ->getRepository('AppBundle:Holding')
             ->findBy(['portfolio' => $portfolio]);
+
+        $transactions = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Transaction')
+            ->findBy(['portfolio' => $portfolio]);
         
         return [
             'portfolio' => $portfolio, 
             'holdings' => $holdings,
+            'transactions' => $transactions,
             'return' => $portfolio->countPortfolioReturn()
         ];
     }

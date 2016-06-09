@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Controller;
-
 
 use AppBundle\Form\StockQuantityBought;
 use AppBundle\Form\StockQuantityBoughtFormType;
