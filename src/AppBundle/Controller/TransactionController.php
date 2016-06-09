@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Transaction;
 use AppBundle\Form\StockQuantityBought;
 use AppBundle\Form\StockQuantityBoughtFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -9,15 +10,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @Route("portfolio/{portfolioId}/transaction", requirements={"portfolioId": "\d+"})
- */
 class TransactionController extends Controller
 {
     /**
-     * @Route("/buy", name="buyStock")
+     * @Route("portfolio/{portfolioId}/transaction/buy", name="buyStock", requirements={"portfolioId": "\d+"})
      * @Template("@App/transactions/buyStock.html.twig")
      */
     public function buyAction($portfolioId)
@@ -32,7 +32,7 @@ class TransactionController extends Controller
     }
 
     /**
-     * @Route("/buy/{symbol}", name="buySpecificStock")
+     * @Route("portfolio/{portfolioId}/transaction/buy/{symbol}", name="buySpecificStock", requirements={"portfolioId": "\d+"})
      * @Template("@App/stock/buySpecificStock.html.twig")
      */
     public function buySpecificAction(Request $request,$portfolioId, $symbol)
@@ -78,5 +78,28 @@ class TransactionController extends Controller
 
         return ['data' => $data, 'portfolio' => $portfolio, 'maxAmount' => $maxAmount, 'form' => $form->createView()];
     }
-    
+
+    /**
+     * @Route("/share/{transactionId}", name="shareTransaction", options={"expose"=true})
+     */
+    public function shareTransaction(Request $request, $transactionId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $transaction = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Transaction')
+            ->find($transactionId);
+
+        $action = $request->request->get('action');
+
+        if ($action == 'share') {
+            $transaction->setIsShared(true);
+        } elseif ($action == 'unshare') {
+            $transaction->setIsShared(false);
+        }
+
+        $em->flush();
+
+        return new JsonResponse($action);
+    }
 }

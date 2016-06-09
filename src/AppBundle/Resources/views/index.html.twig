@@ -12,10 +12,30 @@
             </div>
         {% endif %}
 
-        <div class="row">
+        <div class="col-md-8">
             {% include('AppBundle:include:stockPrices.html.twig') %}
+            {% if sharedTransactions %}
+                <h3>Shared transactions</h3>
+                <table class="table">
+                    <tr>
+                        <th>Owner</th>
+                        <th>Type</th>
+                        <th>Stock</th>
+                        <th>Price</th>
+                    </tr>
+                    {% for transaction in sharedTransactions %}
+                        <tr>
+                            <td>{{ users[transaction.id] }}</td>
+                            <td>{{ transaction.transactionType }}</td>
+                            <td>{{ transaction.stockSymbol }}</td>
+                            <td>{{ transaction.stockPrice|number_format(2) }}$</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <h3>Nobody shared a transaction yet! Be first!</h3>
+            {% endif %}
         </div>
-
     </div>
 
 {% endblock %}

@@ -38,6 +38,7 @@ class Trader
         $transaction->setStockSymbol($stockData['symbol']);
         $transaction->setStockPrice($stockData['price']);
         $transaction->setTransactionType('buy');
+        $transaction->setIsShared(false);
         $this->em->persist($transaction);
         
         // Modify portfolio cash

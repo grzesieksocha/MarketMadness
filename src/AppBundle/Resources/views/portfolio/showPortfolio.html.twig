@@ -61,6 +61,22 @@
                         <td>{{ transaction.stockQuantity }}</td>
                         <td>{{ transaction.stockPrice|number_format(2) }}</td>
                         <td>{{ transaction.transactionType }}</td>
+                        <td><a class="btn btn-default shareTransactionButton"
+                               data-id="{{ transaction.id }}"
+                               data-isshared="{% spaceless %}
+                                   {% if transaction.isShared == false %}
+                                        0
+                                   {% elseif transaction.isShared == true %}
+                                        1
+                                   {% endif %}{% endspaceless %}"
+                               href="#">
+                                {% if transaction.isShared == false %}
+                                    Share
+                                {% elseif transaction.isShared == true %}
+                                    Unshare
+                                {% endif %}
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
@@ -68,4 +84,11 @@
             <p>You do not have any transactions yet!</p>
         {% endif %}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/jquery-1.12.4.min.js') }}"></script>
+    <script src="{{ asset('js/shareTransaction.js') }}"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 {% endblock %}

@@ -19,8 +19,19 @@ class MainController extends Controller
             ->getRepository("AppBundle:Stock")
             ->getAllSymbols();
 
-        $data = $this->get('data_getter')->getData($stockSymbols, ['price', 'name', 'symbol']);
+        $sharedTransactions = $this->getDoctrine()
+            ->getRepository("AppBundle:Transaction")
+            ->getSharedTransactions();
 
-        return ['data' => $data];
+        $users = [];
+        $portfolioNumber = 0;
+        foreach ($sharedTransactions as $transaction) {
+            $users[$transaction->getId()]= $transaction->getPortfolio()->getUser()->getUsername();
+            $portfolioNumber++;
+        }
+
+        $data = $this->get('data_getter')->getData($stockSymbols, ['price', 'name', 'symbol']);
+        
+        return ['data' => $data, 'sharedTransactions' => $sharedTransactions, 'users' => $users];
     }
 }

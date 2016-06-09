@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\TransactionRepository")
  * @ORM\Table(name="transaction")
  */
 class Transaction
@@ -41,6 +41,11 @@ class Transaction
      * @ORM\Column(type="string")
      */
     private $transactionType;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isShared;
     
     public function getId()
     {
@@ -105,5 +110,15 @@ class Transaction
     public function getPortfolio()
     {
         return $this->portfolio;
+    }
+
+    public function getIsShared()
+    {
+        return $this->isShared;
+    }
+
+    public function setIsShared($isShared)
+    {
+        $this->isShared = $isShared;
     }
 }
