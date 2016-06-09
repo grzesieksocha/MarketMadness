@@ -5,14 +5,17 @@ Check if you are a good investor with this stock exchange based game!
 Buy and sell stock using your virtual money and compere your return rate with other users!
 
 ####To implement:
-1. User account using FOSUserBundle
-2. Basic html template
-3. List of available stocks using Yahoo! API
-4. New game page
+**Most important - error handling**
+**Next: security / validation**
+1. User account using FOSUserBundle - handle editing user
+2. Admin account
+3. Basic html template
+4. List of available stocks using Yahoo! API
+~~5. New game page~~
 
 ####Ideas:
-1. Buy / Sell stocks
-2. Different difficulties - trade charges rate
+1. Buy / Sell stocks (buying implemented)
+~~2. Different difficulties - trade charges rate~~
 
 ####Example fields:
 "change" : "-1.580002",
