@@ -18,38 +18,19 @@ class Trader
 
     public function buyStock(Portfolio $portfolio, array $stockData, $quantity)
     {
-        // Count cash spent
-        $stockCost = floor($stockData['price'] * $quantity * 100);
-        $commission = floor($stockCost * $this->getCommission($portfolio->getDifficulty()));
-        $totalCost = $stockCost + $commission;
+        $cost = $this->countCost($stockData['price'], $quantity, $portfolio->getDifficulty());
 
-        // Add holding
-        $holding = new Holding();
-        $holding->setPortfolio($portfolio);
-        $holding->setAverageBuyPrice($stockData['price']);
-        $holding->setStockQuantity($quantity);
-        $holding->setStockSymbol($stockData['symbol']);
-        $this->em->persist($holding);
-        
-        // Add transaction
-        $transaction = new Transaction();
-        $transaction->setStockQuantity($quantity);
-        $transaction->setPortfolio($portfolio);
-        $transaction->setStockSymbol($stockData['symbol']);
-        $transaction->setStockPrice($stockData['price']);
-        $transaction->setTransactionType('buy');
-        $transaction->setIsShared(false);
-        $this->em->persist($transaction);
-        
+        $this->addHolding($portfolio, $stockData, $quantity);
+        $this->addTransaction($portfolio, $stockData, $quantity);
+
         // Modify portfolio cash
         $portfolioCashAmount = $portfolio->getPresentCashAmount();
-        $portfolioCashAmount = $portfolioCashAmount - $totalCost;
+        $portfolioCashAmount = $portfolioCashAmount - ($cost['stockCost'] + $cost['commission']);
         $portfolio->setPresentCashAmount($portfolioCashAmount);
-        $this->em->persist($transaction);
 
         $this->em->flush();
         
-        return ['cost' => $stockCost, 'commission' => $commission];
+        return $cost;
     }
 
     public function countMaximumQuantityOfStock($cashAmount, $stockPrice, $difficulty)
@@ -59,6 +40,49 @@ class Trader
         $maximumQuantityOfStock = floor(($cashAmount/100)/$stockPrice);
         
         return $maximumQuantityOfStock;
+    }
+
+    private function countCost($price, $quantity, $difficulty)
+    {
+        $stockCost = floor($price * $quantity * 100);
+        $commission = floor($stockCost * $this->getCommission($difficulty));
+        return ['stockCost' => $stockCost, 'commission' => $commission];
+    }
+
+    private function addHolding($portfolio, $stockData, $quantity)
+    {
+        $holding = $this->em->getRepository('AppBundle:Holding')
+            ->findOneBy(
+                array('portfolio' => $portfolio, 'stockSymbol' => $stockData['symbol'])
+            );
+
+        if (!$holding) {
+            $holding = new Holding();
+            $holding->setPortfolio($portfolio);
+            $holding->setAverageBuyPrice($stockData['price']);
+            $holding->setStockQuantity($quantity);
+            $holding->setStockSymbol($stockData['symbol']);
+            $this->em->persist($holding);
+        } else {
+            $holding->addHolding($quantity, $stockData['price']);
+        }
+    }
+
+    private function addTransaction(Portfolio $portfolio, array $stockData, $quantity)
+    {
+        $transaction = new Transaction();
+        $transaction->setStockQuantity($quantity);
+        $transaction->setPortfolio($portfolio);
+        $transaction->setStockSymbol($stockData['symbol']);
+        $transaction->setStockPrice($stockData['price']);
+        $transaction->setTransactionType('buy');
+        $transaction->setIsShared(false);
+        $this->em->persist($transaction);
+    }
+
+    private function modifyPortfolioCash()
+    {
+
     }
 
     private function getCommission($difficulty)

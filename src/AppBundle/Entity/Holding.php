@@ -37,6 +37,20 @@ class Holding
      */
     private $averageBuyPrice;
     
+    public function __construct()
+    {
+        $this->stockQuantity = 0;
+        $this->averageBuyPrice = 0;
+    }
+
+    public function addHolding($quantity, $price)
+    {
+        $this->averageBuyPrice = 
+            (($this->stockQuantity * $this->averageBuyPrice) + ($quantity * $price)) / ($this->stockQuantity + $quantity);
+        $this->stockQuantity += $quantity;
+            
+    }
+    
     public function getId()
     {
         return $this->id;

@@ -6,7 +6,7 @@
     {% endif %}
     <div class="col-md-8">
         <h3>You want to buy <strong>{{ data.name }} @ {{ data.price }} $</strong> </h3>
-        <h3>Cash available: {{ (portfolio.presentCashAmount/100)|number_format }} $</h3>
+        <h3>Cash available: {{ (portfolio.presentCashAmount/100)|number_format(2) }} $</h3>
         <h3>Maximum amount you can buy: {{ maxAmount }}</h3>
         <div class="col-md-3">
         {% form_theme form 'bootstrap_3_layout.html.twig' %}

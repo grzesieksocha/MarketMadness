@@ -13,7 +13,7 @@
         {% endif %}
 
         <div class="col-md-8">
-            {% include('AppBundle:include:stockPrices.html.twig') %}
+            {% include('@App/_stockTable.html.twig') %}
             {% if sharedTransactions %}
                 <h3>Shared transactions</h3>
                 <table class="table">

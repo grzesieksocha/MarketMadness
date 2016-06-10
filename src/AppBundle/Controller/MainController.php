@@ -30,7 +30,7 @@ class MainController extends Controller
             $portfolioNumber++;
         }
 
-        $data = $this->get('data_getter')->getData($stockSymbols, ['price', 'name', 'symbol']);
+        $data = $this->get('data_getter')->getData($stockSymbols, ['price', 'name', 'symbol', 'utctime']);
         
         return ['data' => $data, 'sharedTransactions' => $sharedTransactions, 'users' => $users];
     }

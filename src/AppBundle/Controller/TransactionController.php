@@ -67,7 +67,7 @@ class TransactionController extends Controller
 
                 $this->addFlash(
                     'success', 
-                    "You bought " . $form->getData()->getQuantity() . " shares of " . $data['name'] . " for " . $transaction['cost'] / 100 . "$ & commission of: " . $transaction['commission'] / 100 . "$");
+                    "You bought " . $form->getData()->getQuantity() . " shares of " . $data['name'] . " for " . $transaction['stockCost'] / 100 . "$ & commission of: " . $transaction['commission'] / 100 . "$");
                 return $this->redirectToRoute("showPortfolio", ['id' => $portfolio->getId()]);
             }
             catch (Exception $e) {
