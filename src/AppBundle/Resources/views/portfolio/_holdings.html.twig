@@ -1,0 +1,28 @@
+<h3>Holdings <a class="btn btn-success" href="{{ path('buyStock', {'portfolioId': portfolio.id}) }}">Buy</a></h3>
+
+{% if holdings %}
+    <table class="table">
+        <tr>
+            <th>Stock symbol</th>
+            <th>Quantity</th>
+            <th>Average cost</th>
+            <th>Present price</th>
+            <th>Difference</th>
+            <th>Action</th>
+        </tr>
+        {% for holding in holdings %}
+            <tr>
+                <td>{{ holding.stockSymbol }}</td>
+                <td>{{ holding.stockQuantity }}</td>
+                <td>{{ holding.averageBuyPrice|number_format(2) }} $</td>
+                <td>
+                    {{ prices[holding.stockSymbol]|number_format(2) }} $
+                </td>
+                <td>{{ (holding.averageBuyPrice - prices[holding.stockSymbol])|number_format(2) }} $</td>
+                <td><a class="btn btn-success" href="{{ path('sellSpecificStock', {'portfolioId': portfolio.id, 'symbol': holding.stockSymbol}) }}">Sell</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>You do not have any holdings yet!</p>
+{% endif %}

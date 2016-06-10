@@ -23,70 +23,9 @@
         <h3>Cash available:</h3>
         {{ (portfolio.presentCashAmount/100)|number_format(2) }} $
 
-        <h3>Holdings <a class="btn btn-success" href="{{ path('buyStock', {'portfolioId': portfolio.id}) }}">Buy</a></h3>
+        {{ include("@App/portfolio/_holdings.html.twig") }}
 
-        {% if holdings %}
-            <table class="table">
-                <tr>
-                    <th>Stock symbol</th>
-                    <th>Quantity</th>
-                    <th>Average cost</th>
-                    <th>Action</th>
-                </tr>
-                {% for holding in holdings %}
-                    <tr>
-                        <td>{{ holding.stockSymbol }}</td>
-                        <td>{{ holding.stockQuantity }}</td>
-                        <td>{{ holding.averageBuyPrice|number_format(2) }} $</td>
-                        <td><a class="btn btn-success" href="{{ path('sellSpecificStock', {'portfolioId': portfolio.id, 'symbol': holding.stockSymbol}) }}">Sell</a></td>
-                    </tr>
-                {% endfor %}
-            </table>
-        {% else %}
-            <p>You do not have any holdings yet!</p>
-        {% endif %}
-
-        <h3>Recent Transactions:</h3>
-
-        {% if transactions %}
-            <table class="table">
-                <tr>
-                    <th>Date</th>
-                    <th>Stock symbol</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Transaction Type</th>
-                    <th></th>
-                </tr>
-                {% for transaction in transactions %}
-                    <tr>
-                        <td>{{ transaction.date|date('d/m/Y H:i') }}</td>
-                        <td>{{ transaction.stockSymbol }}</td>
-                        <td>{{ transaction.stockQuantity }}</td>
-                        <td>{{ transaction.stockPrice|number_format(2) }}</td>
-                        <td>{{ transaction.transactionType }}</td>
-                        <td><a class="btn btn-default shareTransactionButton"
-                               data-id="{{ transaction.id }}"
-                               data-isshared="{% spaceless %}
-                                   {% if transaction.isShared == false %}
-                                        0
-                                   {% elseif transaction.isShared == true %}
-                                        1
-                                   {% endif %}{% endspaceless %}"
-                               href="#">
-                                {% if transaction.isShared == false %}
-                                    Share
-                                {% elseif transaction.isShared == true %}
-                                    Unshare
-                                {% endif %}
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-        {% else %}
-            <p>You do not have any transactions yet!</p>
-        {% endif %}
+        {{ include("@App/portfolio/_transactions.html.twig") }}
     </div>
 {% endblock %}
 

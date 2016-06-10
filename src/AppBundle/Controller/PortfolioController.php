@@ -44,12 +44,25 @@ class PortfolioController extends Controller
             ->getRepository('AppBundle:Holding')
             ->findBy(['portfolio' => $portfolio]);
 
+        $symbols = [];
+        foreach ($holdings as $holding) {
+            $symbols[] = $holding->getStockSymbol();
+        }
+
         $transactions = $this
             ->getDoctrine()
             ->getRepository('AppBundle:Transaction')
             ->findBy(['portfolio' => $portfolio], ['date' => 'DESC']);
-        
+
+        $data = $this->get('data_getter')->getData($symbols, ['symbol', 'price']);
+
+        $presentPrices = [];
+        foreach ($data as $price) {
+            $presentPrices[$price['symbol']] = $price['price'];
+        }
+
         return [
+            'prices' => $presentPrices,
             'portfolio' => $portfolio, 
             'holdings' => $holdings,
             'transactions' => $transactions,
