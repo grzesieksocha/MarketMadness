@@ -1,0 +1,23 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {% include('AppBundle:include:sideBar.html.twig') %}
+    {% endif %}
+    <div class="col-md-8">
+        <h3>You want to sell <strong>{{ holding.stockSymbol }} @ {{ data.price }} $</strong> </h3>
+        <h3>Maximum amount you can sell: {{ holding.StockQuantity }}</h3>
+        <h3>Average cost of your holding: {{ holding.averageBuyPrice|number_format(6) }}$</h3>
+        <div class="col-md-3">
+        {% form_theme form 'bootstrap_3_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_label(form.quantity) }}
+            {{ form_errors(form.quantity) }}
+            {{ form_widget(form.quantity, { 'attr': {'min': 0, 'max': holding.StockQuantity} }) }}
+            {{ form_end(form) }}
+
+            <a class="btn btn-success" href="{{ path('showPortfolio', {'id': portfolio.id}) }}">Back to portfolio</a>
+        </div>
+        {{ dump(data) }}
+    </div>
+{% endblock %}

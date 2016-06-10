@@ -21,7 +21,7 @@ class Trader
         $cost = $this->countCost($stockData['price'], $quantity, $portfolio->getDifficulty());
 
         $this->addHolding($portfolio, $stockData, $quantity);
-        $this->addTransaction($portfolio, $stockData, $quantity);
+        $this->addBuyTransaction($portfolio, $stockData, $quantity);
 
         // Modify portfolio cash
         $portfolioCashAmount = $portfolio->getPresentCashAmount();
@@ -30,6 +30,23 @@ class Trader
 
         $this->em->flush();
         
+        return $cost;
+    }
+
+    public function sellStock(Portfolio $portfolio, Holding $holding, array $stockData, $quantity)
+    {
+        $cost = $this->countCost($stockData['price'], $quantity, $portfolio->getDifficulty());
+
+        $this->removeHolding($holding, $quantity);
+        $this->addSellTransaction($portfolio, $stockData, $quantity);
+
+        // Modify portfolio cash
+        $portfolioCashAmount = $portfolio->getPresentCashAmount();
+        $portfolioCashAmount = $portfolioCashAmount + $cost['stockCost'] - $cost['commission'];
+        $portfolio->setPresentCashAmount($portfolioCashAmount);
+
+        $this->em->flush();
+
         return $cost;
     }
 
@@ -68,7 +85,17 @@ class Trader
         }
     }
 
-    private function addTransaction(Portfolio $portfolio, array $stockData, $quantity)
+    private function removeHolding(Holding $holding, $quantity)
+    {
+        if (($holding->getStockQuantity() - $quantity) == 0) {
+            $this->em->remove($holding);
+        } else {
+            $pastHolding = $holding->getStockQuantity();
+            $holding->setStockQuantity($pastHolding - $quantity);
+        }
+    }
+
+    private function addBuyTransaction(Portfolio $portfolio, array $stockData, $quantity)
     {
         $transaction = new Transaction();
         $transaction->setStockQuantity($quantity);
@@ -80,9 +107,16 @@ class Trader
         $this->em->persist($transaction);
     }
 
-    private function modifyPortfolioCash()
+    private function addSellTransaction(Portfolio $portfolio, array $stockData, $quantity)
     {
-
+        $transaction = new Transaction();
+        $transaction->setStockQuantity($quantity);
+        $transaction->setPortfolio($portfolio);
+        $transaction->setStockSymbol($stockData['symbol']);
+        $transaction->setStockPrice($stockData['price']);
+        $transaction->setTransactionType('sell');
+        $transaction->setIsShared(false);
+        $this->em->persist($transaction);
     }
 
     private function getCommission($difficulty)

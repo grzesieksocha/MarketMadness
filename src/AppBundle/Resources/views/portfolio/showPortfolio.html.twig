@@ -16,9 +16,9 @@
 
         <h3>Investment return:
             {% if return >= 0 %}
-                <span class="green"> {{ return }}% </span></h3>
+                <span class="green"> {{ return|number_format(3) }}% </span></h3>
             {% else %}
-                <span class="red"> {{ return }}% </span></h3>
+                <span class="red"> {{ return|number_format(3) }}% </span></h3>
             {% endif %}
         <h3>Cash available:</h3>
         {{ (portfolio.presentCashAmount/100)|number_format(2) }} $
@@ -31,12 +31,14 @@
                     <th>Stock symbol</th>
                     <th>Quantity</th>
                     <th>Average cost</th>
+                    <th>Action</th>
                 </tr>
                 {% for holding in holdings %}
                     <tr>
                         <td>{{ holding.stockSymbol }}</td>
                         <td>{{ holding.stockQuantity }}</td>
-                        <td>{{ holding.averageBuyPrice|number_format(2) }}</td>
+                        <td>{{ holding.averageBuyPrice|number_format(2) }} $</td>
+                        <td><a class="btn btn-success" href="{{ path('sellSpecificStock', {'portfolioId': portfolio.id, 'symbol': holding.stockSymbol}) }}">Sell</a></td>
                     </tr>
                 {% endfor %}
             </table>

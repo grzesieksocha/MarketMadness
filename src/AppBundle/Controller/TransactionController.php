@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Transaction;
 use AppBundle\Form\StockQuantityBought;
 use AppBundle\Form\StockQuantityBoughtFormType;
+use AppBundle\Form\StockQuantitySold;
+use AppBundle\Form\StockQuantitySoldFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,6 +31,50 @@ class TransactionController extends Controller
         $data = $this->get('data_getter')->getData($stockSymbols, ['price', 'name', 'symbol']);
 
         return ['data' => $data, 'portfolioId' => $portfolioId];
+    }
+
+    /**
+     * @Route("portfolio/{portfolioId}/transaction/sell/{symbol}", name="sellSpecificStock", requirements={"portfolioId": "\d+"})
+     * @Template("@App/stock/sellSpecificStock.html.twig")
+     */
+    public function sellSpecificAction(Request $request,$portfolioId, $symbol)
+    {
+        $symbolArray[] = $symbol;
+        $data = $this->get('data_getter')->getData($symbolArray, ['price', 'symbol', 'name'])[0];
+
+        $portfolio = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Portfolio')
+            ->find($portfolioId);
+
+        $holding = $this->getDoctrine()
+            ->getRepository('AppBundle:Holding')
+            ->findOneBy(array(
+                'portfolio' => $portfolio,
+                'stockSymbol' => $symbol
+            ));
+
+        $stockQuantitySold = new StockQuantitySold();
+        $form = $this->createForm(StockQuantitySoldFormType::class, $stockQuantitySold)
+            ->add('Sell', SubmitType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+                $transaction = $this->get('trader')->sellStock(
+                    $portfolio,
+                    $holding,
+                    $data,
+                    $form->getData()->getQuantity()
+                );
+
+                $this->addFlash(
+                    'success',
+                    "You sold " . $form->getData()->getQuantity() . " shares of " . $data['name'] . " for " . $transaction['stockCost'] / 100 . "$ & commission of: " . $transaction['commission'] / 100 . "$");
+                return $this->redirectToRoute("showPortfolio", ['id' => $portfolio->getId()]);
+        }
+
+        return ['data' => $data, 'portfolio' => $portfolio, 'form' => $form->createView(), 'holding' => $holding];
     }
 
     /**
