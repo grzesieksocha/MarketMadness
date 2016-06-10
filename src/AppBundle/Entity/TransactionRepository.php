@@ -12,6 +12,7 @@ class TransactionRepository extends EntityRepository
     {
         $sharedTransactions = $this->createQueryBuilder('transaction')
             ->where('transaction.isShared = true')
+            ->orderBy('transaction.date', 'DESC')
             ->getQuery()
             ->getResult();
 

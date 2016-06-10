@@ -51,6 +51,7 @@
         {% if transactions %}
             <table class="table">
                 <tr>
+                    <th>Date</th>
                     <th>Stock symbol</th>
                     <th>Quantity</th>
                     <th>Unit Price</th>
@@ -59,6 +60,7 @@
                 </tr>
                 {% for transaction in transactions %}
                     <tr>
+                        <td>{{ transaction.date|date('d/m/Y H:i') }}</td>
                         <td>{{ transaction.stockSymbol }}</td>
                         <td>{{ transaction.stockQuantity }}</td>
                         <td>{{ transaction.stockPrice|number_format(2) }}</td>

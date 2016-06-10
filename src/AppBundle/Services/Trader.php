@@ -6,6 +6,7 @@ use AppBundle\Entity\Holding;
 use AppBundle\Entity\Portfolio;
 use AppBundle\Entity\Transaction;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class Trader
 {
@@ -104,6 +105,7 @@ class Trader
         $transaction->setStockPrice($stockData['price']);
         $transaction->setTransactionType('buy');
         $transaction->setIsShared(false);
+        $transaction->setDate(new \DateTime('now'));
         $this->em->persist($transaction);
     }
 
@@ -116,6 +118,7 @@ class Trader
         $transaction->setStockPrice($stockData['price']);
         $transaction->setTransactionType('sell');
         $transaction->setIsShared(false);
+        $transaction->setDate(new \DateTime('now'));
         $this->em->persist($transaction);
     }
 

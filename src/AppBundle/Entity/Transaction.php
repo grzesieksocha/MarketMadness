@@ -46,10 +46,25 @@ class Transaction
      * @ORM\Column(type="boolean")
      */
     private $isShared;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
     
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    public function setDate($date)
+    {
+        $this->date = $date;
     }
     
     public function setStockSymbol($stockSymbol)
