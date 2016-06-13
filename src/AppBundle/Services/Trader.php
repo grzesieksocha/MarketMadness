@@ -133,4 +133,27 @@ class Trader
                 return 0.05;
         }
     }
+
+    public function countReturn(Portfolio $portfolio, $holdings, array $stockData)
+    {
+        $initialValue = $portfolio->getInitialCashAmount();
+        $transformedStockData = [];
+        foreach ($stockData as $stock) {
+            $transformedStockData[$stock['symbol']] = $stock['price'];
+        }
+        $holdingsWorth = $this->calculateHoldingsWorth($holdings, $transformedStockData);
+
+        $return = (($holdingsWorth + $portfolio->getPresentCashAmount()) - $initialValue) / $initialValue * 100;
+        return $return;
+    }
+
+    private function calculateHoldingsWorth($holdings, $stockData)
+    {
+        $value = 0;
+        foreach ($holdings as $holding) {
+            $value += $stockData[$holding->getStockSymbol()] * $holding->getStockQuantity();
+        }
+        $value *= 100;
+        return $value;
+    }
 }
