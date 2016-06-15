@@ -54,12 +54,17 @@ class PortfolioController extends Controller
             ->getRepository('AppBundle:Transaction')
             ->findBy(['portfolio' => $portfolio], ['date' => 'DESC']);
 
-        $data = $this->get('data_getter')->getData($symbols, ['symbol', 'price']);
-        $return = $this->get('trader')->countReturn($portfolio, $holdings, $data);
-        
-        $presentPrices = [];
-        foreach ($data as $price) {
-            $presentPrices[$price['symbol']] = $price['price'];
+        if ($transactions) {
+            $data = $this->get('data_getter')->getData($symbols, ['symbol', 'price']);
+            $return = $this->get('trader')->countReturn($portfolio, $holdings, $data);
+
+            $presentPrices = [];
+            foreach ($data as $price) {
+                $presentPrices[$price['symbol']] = $price['price'];
+            }
+        } else {
+            $presentPrices = null;
+            $return = 0;
         }
 
         return [

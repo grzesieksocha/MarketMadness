@@ -1,13 +1,18 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
-
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\EntityRepository;
 
 class StockRepository extends EntityRepository
 {
+    /**
+     * Extract a symbol of every Stock.
+     *
+     * @return array containing stock symbols
+     * @throws EntityNotFoundException
+     */
     public function getAllSymbols()
     {
         $stocks = $this->createQueryBuilder('stock')
@@ -15,11 +20,14 @@ class StockRepository extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        $stockSymbols = [];
+        if (!$stocks) {
+            throw new EntityNotFoundException("No stocks in the database. Please use doctrine:fixtures:load");
+        }
 
-        foreach ($stocks as $symbol)
+        $stockSymbols = [];
+        foreach ($stocks as $stock)
         {
-            $stockSymbols[] = $symbol['symbol'];
+            $stockSymbols[] = $stock['symbol'];
         }
         return $stockSymbols;
     }

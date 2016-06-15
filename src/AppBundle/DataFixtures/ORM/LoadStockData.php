@@ -40,12 +40,17 @@ class LoadStockData implements FixtureInterface
         $stock6->setSymbol("PYPL");
         $stock6->setDescription("PayPal Holdings, Inc.");
 
+        $stock7 = new Stock();
+        $stock7->setSymbol("LNKD");
+        $stock7->setDescription("LinkedIn Corporation");
+
         $manager->persist($stock1);
         $manager->persist($stock2);
         $manager->persist($stock3);
         $manager->persist($stock4);
         $manager->persist($stock5);
         $manager->persist($stock6);
+        $manager->persist($stock7);
 
         $manager->flush();
     }
