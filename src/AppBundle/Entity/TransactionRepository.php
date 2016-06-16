@@ -21,17 +21,4 @@ class TransactionRepository extends EntityRepository
 
         return $sharedTransactions;
     }
-
-    /**
-     * Extract the username of the transaction provided
-     *
-     * @param $transactionId
-     * @return null|object
-     */
-    public function getTransactionUser($transactionId)
-    {
-        $portfolio = $this->find($transactionId);
-        
-        return $portfolio;
-    }
 }

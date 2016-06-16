@@ -1,0 +1,16 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        {% include('@App/_sideBar.html.twig') %}
+        <div class="col-md-8">
+            <h3>Add Yahoo Stock</h3>
+            <a href="{{ path('addYahooStock') }}" class="btn btn-default">Add</a>
+            <h3>Show all users</h3>
+            <h3>Show all portfolios</h3>
+            <h3>Manage comments</h3>
+            <h3>Manage transactions</h3>
+        </div>
+    </div>
+
+{% endblock %}

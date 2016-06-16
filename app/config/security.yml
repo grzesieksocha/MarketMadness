@@ -22,6 +22,7 @@ security:
         main:
             pattern: ^/
             form_login:
+                login_path: /
                 provider: fos_userbundle
                 csrf_provider: security.csrf.token_manager # Use form.csrf_provider instead for Symfony <2.4
             logout:       true
@@ -31,5 +32,5 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/portfolio/, role: ROLE_USER }
+        - { path: ^/admin, role: ROLE_ADMIN }
+        - { path: ^/portfolio, role: ROLE_USER }

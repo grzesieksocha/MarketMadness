@@ -4,10 +4,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Portfolio;
 use AppBundle\Form\PortfolioFormType;
+use Doctrine\ORM\EntityNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/portfolio")
@@ -20,6 +22,7 @@ class PortfolioController extends Controller
      */
     public function listAction()
     {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'You must log in!');
         $portfolios = $this
             ->getDoctrine()
             ->getRepository('AppBundle:Portfolio')
@@ -38,6 +41,12 @@ class PortfolioController extends Controller
             ->getDoctrine()
             ->getRepository('AppBundle:Portfolio')
             ->find($id);
+
+        if (!$portfolio) {
+            throw new EntityNotFoundException("Portfolio not found");
+        } elseif ($portfolio->getUser() != $this->getUser()) {
+            throw new AccessDeniedException("You are not entitled to show this portfolio");
+        }
 
         $holdings = $this
             ->getDoctrine()

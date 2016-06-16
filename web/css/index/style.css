@@ -19,3 +19,12 @@
 .topMargin {
     margin-top: 50px;
 }
+
+.registerSubmitButton {
+    margin-top: 15px;
+}
+
+.registerLabel {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}

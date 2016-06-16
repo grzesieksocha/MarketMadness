@@ -3,7 +3,7 @@
 {% block body %}
     <div class="row">
         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            {% include('AppBundle:include:sideBar.html.twig') %}
+            {% include('@App/_sideBar.html.twig') %}
         {% else %}
             <div class="row">
                 <div class="col-md-8">
@@ -23,6 +23,7 @@
                         <th>Type</th>
                         <th>Stock</th>
                         <th>Price</th>
+                        <th>Comment</th>
                     </tr>
                     {% for transaction in sharedTransactions %}
                         <tr>
@@ -31,6 +32,10 @@
                             <td>{{ transaction.transactionType }}</td>
                             <td>{{ transaction.stockSymbol }}</td>
                             <td>{{ transaction.stockPrice|number_format(2) }}$</td>
+                            <td><a class="btn btn-default commentTransactionButton" href="#">
+                                    Comment
+                                </a>
+                            </td>
                         </tr>
                     {% endfor %}
                 </table>

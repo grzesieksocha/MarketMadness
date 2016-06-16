@@ -3,6 +3,7 @@
 
 namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -24,16 +25,20 @@ class Holding
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="The stock symbol cannot be blank")
+     * @Assert\Type(type="string", message="The value {{ value }} is not a valid {{ type }}")
      */
     private $stockSymbol;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
     private $stockQuantity;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank()
      */
     private $averageBuyPrice;
     
@@ -42,7 +47,7 @@ class Holding
         $this->stockQuantity = 0;
         $this->averageBuyPrice = 0;
     }
-
+    
     public function addHolding($quantity, $price)
     {
         $this->averageBuyPrice = 

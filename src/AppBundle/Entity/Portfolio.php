@@ -1,8 +1,10 @@
 <?php
 
 namespace AppBundle\Entity;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -19,16 +21,20 @@ class Portfolio
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     * @Assert\Length(min="3", minMessage="The portfolio name should be longer than 3 signs", max="15", maxMessage="The portfolio name should be shorter than 15 signs")
      */
     private $name;
     
     /**
      * @ORM\Column(type="string")
+     * @Assert\Choice({"easy", "medium", "hard"}, message="Difficulty should be: easy, medium or hard")
      */
     private $difficulty;
     
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Choice({1000000, 2000000, 5000000}, message="Invalid initial cash amount")
      */
     private $initialCashAmount;
 
@@ -54,6 +60,7 @@ class Portfolio
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\Type(type="boolean")
      */
     private $isActive;
     
