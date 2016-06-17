@@ -19,6 +19,10 @@ class MainController extends Controller
             ->getRepository("AppBundle:Stock")
             ->getAllSymbols();
 
+        if ($stockSymbols) {
+            $data = $this->get('data_getter')->getData($stockSymbols, ['price', 'name', 'symbol', 'utctime']);
+        }
+        
         $sharedTransactions = $this->getDoctrine()
             ->getRepository("AppBundle:Transaction")
             ->getSharedTransactions();
@@ -29,8 +33,6 @@ class MainController extends Controller
             $users[$transaction->getId()]= $transaction->getPortfolio()->getUser()->getUsername();
             $portfolioNumber++;
         }
-
-        $data = $this->get('data_getter')->getData($stockSymbols, ['price', 'name', 'symbol', 'utctime']);
         
         return ['data' => $data, 'sharedTransactions' => $sharedTransactions, 'users' => $users];
     }

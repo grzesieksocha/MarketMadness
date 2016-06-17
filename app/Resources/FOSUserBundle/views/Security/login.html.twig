@@ -9,6 +9,7 @@
         </a>
         {% if is_granted("ROLE_ADMIN") %}
             <a class="btn btn-success buttonPad pull-left" href="{{ path('mainAdminPage') }}">ADMIN PANEL</a>
+            <a class="btn btn-success buttonPad pull-left" href="{{ path('homepage') }}">USER PANEL</a>
         {% endif %}
         <a class="btn btn-warning buttonPad pull-right" href="{{ path('fos_user_security_logout') }}">
         {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
