@@ -28,7 +28,7 @@ class TransactionController extends Controller
             ->getRepository("AppBundle:Stock")
             ->getAllSymbols();
 
-        $data = $this->get('data_getter')->getData($stockSymbols, ['price', 'name', 'symbol']);
+        $data = $this->get('data_getter')->getDataArrayWithSymbolAsKey($stockSymbols, ['price', 'name', 'symbol']);
 
         return ['data' => $data, 'portfolioId' => $portfolioId];
     }
@@ -39,8 +39,7 @@ class TransactionController extends Controller
      */
     public function sellSpecificAction(Request $request,$portfolioId, $symbol)
     {
-        $symbolArray[] = $symbol;
-        $data = $this->get('data_getter')->getData($symbolArray, ['price', 'symbol', 'name'])[0];
+        $data = $this->get('data_getter')->getDataArrayWithSymbolAsKey([$symbol], ['price', 'symbol', 'name']);
 
         $portfolio = $this
             ->getDoctrine()
@@ -64,17 +63,17 @@ class TransactionController extends Controller
                 $transaction = $this->get('trader')->sellStock(
                     $portfolio,
                     $holding,
-                    $data,
+                    $data[$symbol],
                     $form->getData()->getQuantity()
                 );
 
                 $this->addFlash(
                     'success',
-                    "You sold " . $form->getData()->getQuantity() . " shares of " . $data['name'] . " for " . $transaction['stockCost'] / 100 . "$ & commission of: " . $transaction['commission'] / 100 . "$");
+                    "You sold " . $form->getData()->getQuantity() . " shares of " . $data[$symbol]['name'] . " for " . $transaction['stockCost'] / 100 . "$ & commission of: " . $transaction['commission'] / 100 . "$");
                 return $this->redirectToRoute("showPortfolio", ['id' => $portfolio->getId()]);
         }
 
-        return ['data' => $data, 'portfolio' => $portfolio, 'form' => $form->createView(), 'holding' => $holding];
+        return ['data' => $data[$symbol], 'portfolio' => $portfolio, 'form' => $form->createView(), 'holding' => $holding];
     }
 
     /**
@@ -83,8 +82,7 @@ class TransactionController extends Controller
      */
     public function buySpecificAction(Request $request,$portfolioId, $symbol)
     {
-        $symbolArray[] = $symbol;
-        $data = $this->get('data_getter')->getData($symbolArray, ['price', 'symbol', 'name'])[0];
+        $data = $this->get('data_getter')->getDataArrayWithSymbolAsKey([$symbol], ['price', 'symbol', 'name']);
         
         $portfolio = $this
             ->getDoctrine()
@@ -94,7 +92,7 @@ class TransactionController extends Controller
         $maxAmount = $this->get('trader')
             ->countMaximumQuantityOfStock(
                 $portfolio->getPresentCashAmount(),
-                $data['price'],
+                $data[$symbol]['price'],
                 $portfolio->getDifficulty());
 
         $stockQuantityBought = new StockQuantityBought();
@@ -107,13 +105,13 @@ class TransactionController extends Controller
             try {
                 $transaction = $this->get('trader')->buyStock(
                     $portfolio, 
-                    $data, 
+                    $data[$symbol], 
                     $form->getData()->getQuantity()
                 );
 
                 $this->addFlash(
                     'success', 
-                    "You bought " . $form->getData()->getQuantity() . " shares of " . $data['name'] . " for " . $transaction['stockCost'] / 100 . "$ & commission of: " . $transaction['commission'] / 100 . "$");
+                    "You bought " . $form->getData()->getQuantity() . " shares of " . $data[$symbol]['name'] . " for " . $transaction['stockCost'] / 100 . "$ & commission of: " . $transaction['commission'] / 100 . "$");
                 return $this->redirectToRoute("showPortfolio", ['id' => $portfolio->getId()]);
             }
             catch (Exception $e) {
@@ -122,7 +120,7 @@ class TransactionController extends Controller
             }
         }
 
-        return ['data' => $data, 'portfolio' => $portfolio, 'maxAmount' => $maxAmount, 'form' => $form->createView()];
+        return ['data' => $data[$symbol], 'portfolio' => $portfolio, 'maxAmount' => $maxAmount, 'form' => $form->createView()];
     }
 
     /**

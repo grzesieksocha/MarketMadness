@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Command;
 
 use AppBundle\Entity\HistoricalData;
@@ -21,17 +20,24 @@ class GetStockDataCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $doctrine = $this->getContainer()->get('doctrine');
+
+        //Receive array with all stock objects
         $stocks = $doctrine->getRepository('AppBundle:Stock')->findAll();
+        
+        //Query for all stock symbols
         $stockSymbols = $doctrine->getRepository('AppBundle:Stock')
             ->getAllSymbols();
         
-        $data = $this->getContainer()->get('data_getter')->getDataWithSymbolAsKey($stockSymbols);
+        //Query Yahoo for fresh data for each stock
+        $data = $this->getContainer()->get('data_getter')->getDataArrayWithSymbolAsKey($stockSymbols);
 
+        //Transform stocks array so that stock symbol is the key
         $stocksBySymbolArray = [];
         foreach ($stocks as $stock) {
             $stocksBySymbolArray[$stock->getSymbol()] = $stock;
         }
 
+        //Persist data for every stock
         foreach ($stocksBySymbolArray as $symbol => $stock) {
             $historicalData = new HistoricalData();
             $stockData = $data[$symbol];

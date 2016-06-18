@@ -64,7 +64,7 @@ class PortfolioController extends Controller
             ->findBy(['portfolio' => $portfolio], ['date' => 'DESC']);
 
         if ($transactions) {
-            $data = $this->get('data_getter')->getData($symbols, ['symbol', 'price']);
+            $data = $this->get('data_getter')->getDataArrayWithSymbolAsKey($symbols, ['symbol', 'price']);
             $return = $this->get('trader')->countReturn($portfolio, $holdings, $data);
 
             $presentPrices = [];

@@ -18,7 +18,7 @@
                 <td>
                     {{ prices[holding.stockSymbol]|number_format(2) }} $
                 </td>
-                <td>{{ (holding.averageBuyPrice - prices[holding.stockSymbol])|number_format(2) }} $</td>
+                <td>{{ (prices[holding.stockSymbol] - holding.averageBuyPrice)|number_format(2) }} $</td>
                 <td><a class="btn btn-success" href="{{ path('sellSpecificStock', {'portfolioId': portfolio.id, 'symbol': holding.stockSymbol}) }}">Sell</a></td>
             </tr>
         {% endfor %}

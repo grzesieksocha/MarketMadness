@@ -18,9 +18,10 @@ class MainController extends Controller
         $stockSymbols = $this->getDoctrine()
             ->getRepository("AppBundle:Stock")
             ->getAllSymbols();
-        
+
+        $data = null;
         if ($stockSymbols) {
-            $data = $this->get('data_getter')->getData($stockSymbols, ['price', 'name', 'symbol', 'utctime']);
+            $data = $this->get('data_getter')->getDataArrayWithSymbolAsKey($stockSymbols, ['price', 'name', 'symbol', 'utctime']);
         }
         
         $sharedTransactions = $this->getDoctrine()

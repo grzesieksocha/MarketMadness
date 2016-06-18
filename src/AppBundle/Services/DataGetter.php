@@ -11,45 +11,20 @@ class DataGetter
         $this->yahooApi = $yahooApi;
     }
     
-    public function getDataWithSymbolAsKey(array $stocks)
+    public function getDataArrayWithSymbolAsKey(array $stocks, array $fields = null)
     {
         $data = $this->decoder($stocks);
         $result = [];
-        $stockNumber = 0;
-        foreach ($data['list']['resources'] as $stock)
-        {
-            $result[$stock['resource']['fields']['symbol']] = $stock['resource']['fields'];
-            $stockNumber++;
-        }
-        return $result;
-    }
-    
-    public function getData(array $stocks, array $fields)
-    {
-        $data = $this->yahooApi->getDetails($stocks);
-        $data = json_decode($data, true);
-        $result = [];
-        $stockNumber = 0;
-        foreach ($data['list']['resources'] as $stock)
-        {
-            foreach ($fields as $field)
-            {
-                $result[$stockNumber][$field] = $stock['resource']['fields'][$field];
+        if (!$fields) {
+            foreach ($data['list']['resources'] as $stock) {
+                $result[$stock['resource']['fields']['symbol']] = $stock['resource']['fields'];
             }
-            $stockNumber++;
-        }
-        return $result;
-    }
-
-    public function getFullData(array $stocks)
-    {
-        $data = $this->decoder($stocks);
-        $result = [];
-        $stockNumber = 0;
-        foreach ($data['list']['resources'] as $stock)
-        {
-            $result[$stockNumber] = $stock['resource']['fields'];
-            $stockNumber++;
+        } else {
+            foreach ($data['list']['resources'] as $stock) {
+                foreach ($fields as $field) {
+                    $result[$stock['resource']['fields']['symbol']][$field] = $stock['resource']['fields'][$field];
+                }
+            }
         }
         return $result;
     }

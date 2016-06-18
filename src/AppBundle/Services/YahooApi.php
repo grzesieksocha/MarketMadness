@@ -10,6 +10,7 @@ class YahooApi
 {
     const API_URL = "http://finance.yahoo.com/webservice/v1/symbols/";
 
+    //Guzzle Client
     private $client;
     
     public function __construct(Client $client)
