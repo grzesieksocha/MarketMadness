@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,6 +26,31 @@ class Stock
      * @ORM\Column(type="string")
      */
     private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\HistoricalData", mappedBy="stock")
+     */
+    private $historicalData;
+
+    public function __construct()
+    {
+        $this->historicalData = new ArrayCollection();
+    }
+
+    public function addHistoricalData(HistoricalData $historicalData)
+    {
+        $this->historicalData[] = $historicalData;
+    }
+
+    public function removeHistoricalData(HistoricalData $historicalData)
+    {
+        $this->historicalData->removeElement($historicalData);
+    }
+
+    public function getHistoricalData()
+    {
+        return $this->historicalData;
+    }
 
     public function getId()
     {

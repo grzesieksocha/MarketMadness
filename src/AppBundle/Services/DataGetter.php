@@ -10,7 +10,20 @@ class DataGetter
     {
         $this->yahooApi = $yahooApi;
     }
-
+    
+    public function getDataWithSymbolAsKey(array $stocks)
+    {
+        $data = $this->decoder($stocks);
+        $result = [];
+        $stockNumber = 0;
+        foreach ($data['list']['resources'] as $stock)
+        {
+            $result[$stock['resource']['fields']['symbol']] = $stock['resource']['fields'];
+            $stockNumber++;
+        }
+        return $result;
+    }
+    
     public function getData(array $stocks, array $fields)
     {
         $data = $this->yahooApi->getDetails($stocks);
