@@ -28,7 +28,7 @@ class TransactionController extends Controller
             ->getRepository("AppBundle:Stock")
             ->getAllSymbols();
 
-        $data = $this->get('data_getter')->getDataArrayWithSymbolAsKey($stockSymbols, ['price', 'name', 'symbol']);
+        $data = $this->get('db_data_getter')->getDataArrayWithSymbolAsKey($stockSymbols, ['price', 'name', 'symbol']);
 
         return ['data' => $data, 'portfolioId' => $portfolioId];
     }
@@ -39,7 +39,7 @@ class TransactionController extends Controller
      */
     public function sellSpecificAction(Request $request,$portfolioId, $symbol)
     {
-        $data = $this->get('data_getter')->getDataArrayWithSymbolAsKey([$symbol], ['price', 'symbol', 'name']);
+        $data = $this->get('db_data_getter')->getDataArrayWithSymbolAsKey([$symbol], ['price', 'symbol', 'name']);
 
         $portfolio = $this
             ->getDoctrine()
@@ -82,7 +82,7 @@ class TransactionController extends Controller
      */
     public function buySpecificAction(Request $request,$portfolioId, $symbol)
     {
-        $data = $this->get('data_getter')->getDataArrayWithSymbolAsKey([$symbol], ['price', 'symbol', 'name']);
+        $data = $this->get('db_data_getter')->getDataArrayWithSymbolAsKey([$symbol], ['price', 'symbol', 'name']);
         
         $portfolio = $this
             ->getDoctrine()

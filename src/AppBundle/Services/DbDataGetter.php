@@ -6,6 +6,7 @@ namespace AppBundle\Services;
 use AppBundle\Entity\HistoricalData;
 use Doctrine\DBAL\Exception\InvalidArgumentException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Intl\Exception\MissingResourceException;
 
 class DbDataGetter
 {
@@ -29,6 +30,11 @@ class DbDataGetter
                 $historicalData = $this->em
                     ->getRepository('AppBundle:HistoricalData')
                     ->getLatestStockData($stock);
+                
+                if (!$historicalData) {
+                    throw new MissingResourceException("Missing historical data");
+                }
+                
                 $result[$stock->getSymbol()]['symbol'] = $stock->getSymbol();
                 $result[$stock->getSymbol()]['name'] = $stock->getDescription();
                 $result[$stock->getSymbol()]['utctime'] = $historicalData->getDataTime();

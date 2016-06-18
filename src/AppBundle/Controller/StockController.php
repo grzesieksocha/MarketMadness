@@ -19,7 +19,7 @@ class StockController extends Controller
      */
     public function showDetailsAction($symbol)
     {
-        $stockData = $this->get('data_getter')->getDataArrayWithSymbolAsKey([$symbol]);
+        $stockData = $this->get('db_data_getter')->getDataArrayWithSymbolAsKey([$symbol]);
         return ['stock' => array_values($stockData)[0]];
     }
 }
