@@ -21,7 +21,7 @@ class MainController extends Controller
 
         $data = null;
         if ($stockSymbols) {
-            $data = $this->get('data_getter')->getDataArrayWithSymbolAsKey($stockSymbols, ['price', 'name', 'symbol', 'utctime']);
+            $data = $this->get('db_data_getter')->getDataArrayWithSymbolAsKey($stockSymbols, ['price', 'name', 'symbol', 'utctime']);
         }
         
         $sharedTransactions = $this->getDoctrine()
