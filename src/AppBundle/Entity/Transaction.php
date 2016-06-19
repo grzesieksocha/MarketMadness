@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="AppBundle\Entity\TransactionRepository")
  * @ORM\Table(name="transaction")
  */
-class Transaction
+class Transaction implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -135,5 +135,16 @@ class Transaction
     public function setIsShared($isShared)
     {
         $this->isShared = $isShared;
+    }
+
+    public function jsonSerialize(){
+        return [
+            "date" => $this->getDate()->format('Y-m-d, H:i:s'),
+            "symbol" => $this->getStockSymbol(),
+            "quantity" => $this->getStockQuantity(),
+            "price" => $this->getStockPrice(),
+            "type" => $this->getTransactionType(),
+            "user" => $this->getPortfolio()->getUser()->getUsername(),
+        ];
     }
 }

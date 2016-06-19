@@ -14,7 +14,6 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class TransactionController extends Controller
 {
@@ -145,5 +144,21 @@ class TransactionController extends Controller
         $em->flush();
 
         return new JsonResponse($action);
+    }
+
+    /**
+     * @Route("/checkSharedTransactions", name="checkSharedTransactions", options={"expose"=true})
+     */
+    public function checkSharedTransactionsAction()
+    {
+        $sharedTransactions = $this->getDoctrine()
+            ->getRepository("AppBundle:Transaction")
+            ->getSharedTransactions();
+
+        if (!$sharedTransactions) {
+            return new JsonResponse(null);
+        }
+        
+        return new JsonResponse($sharedTransactions);
     }
 }
