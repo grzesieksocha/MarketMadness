@@ -7,18 +7,25 @@ Buy and sell stock using your virtual money and compere your return rate with ot
 Installation
 ============
 Install composer dependencies (with globally installed composer)
+
 '''
 composer install
 '''
+
 For page to work properly upload basic stocks to follow 
+
 '''
 php app/console doctrine:fixtures:load
 '''
+
 Update the database with the most recent Yahoo stock data
+
 '''
 php app/console mm:getData
 '''
+
 Example CRON job downloading stock data every 10 minutes:
+
 '''
 */10    14,15,16,17,18,19,20,21,22,23   *       *       *       your/php/path your/symfony/console/path mm:getData
 '''
