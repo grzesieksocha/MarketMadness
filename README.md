@@ -9,7 +9,9 @@ Installation
 Install composer dependencies (with globally installed composer)
 
 '''
+
 composer install
+
 '''
 
 For page to work properly upload basic stocks to follow 
