@@ -21,4 +21,21 @@ class TransactionRepository extends EntityRepository
 
         return $sharedTransactions;
     }
+
+    public function numberOfRows()
+    {
+        return $this->createQueryBuilder('t')
+            ->select('COUNT(t)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function numberOfShared()
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.isShared = true')
+            ->select('COUNT(t)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

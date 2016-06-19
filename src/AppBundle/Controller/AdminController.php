@@ -21,7 +21,20 @@ class AdminController extends Controller
      * @Template("@App/admin/mainPage.html.twig")
      */
     public function indexAction()
-    {}
+    {
+        $numberOfStocks = $this->getDoctrine()->getRepository('AppBundle:Stock')->numberOfRows();
+        $numberOfUsers = $this->getDoctrine()->getRepository('AppBundle:User')->numberOfRows();
+        $numberOfPortfolios = $this->getDoctrine()->getRepository('AppBundle:Portfolio')->numberOfRows();
+        $numberOfAllTransactions = $this->getDoctrine()->getRepository('AppBundle:Transaction')->numberOfRows();
+        $numberOfSharedTransactions = $this->getDoctrine()->getRepository('AppBundle:Transaction')->numberOfShared();
+        
+        return [
+            'numberOfStocks' => $numberOfStocks,
+            'numberOfUsers' => $numberOfUsers,
+            'numberOfPortfolios' => $numberOfPortfolios,
+            'numberOfAllTransactions' => $numberOfAllTransactions,
+            'numberOfSharedTransactions' => $numberOfSharedTransactions];
+    }
 
     /**
      * @Route("/addStock", name="addYahooStock")
@@ -55,7 +68,6 @@ class AdminController extends Controller
     public function showAllUsersAction()
     {
         $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAll();
-        dump($users);
         return ['users' => $users];
     }
 

@@ -4,7 +4,14 @@
     <div class="row">
         {% include('@App/admin/_adminSideBar.html.twig') %}
         <div class="col-md-8">
-            <h1>Here will be some main page stuff</h1>
+            <h1>Hello Admin!</h1>
+            <div class="list-group col-md-7">
+                <h4 class="list-group-item">Number of stocks followed: <strong>{{ numberOfStocks }}</strong></h4>
+                <h4 class="list-group-item">Number of active users: <strong>{{ numberOfUsers }}</strong></h4>
+                <h4 class="list-group-item">Number of portfolios: <strong>{{ numberOfPortfolios }}</strong></h4>
+                <h4 class="list-group-item">Number of transactions (all / shared): <strong>{{ numberOfAllTransactions }} / {{ numberOfSharedTransactions }}</strong></h4>
+                <h4 class="list-group-item">Number of comments: <strong>*available soon*</strong></h4>
+            </div>
         </div>
     </div>
 

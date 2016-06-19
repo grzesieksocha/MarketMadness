@@ -31,4 +31,12 @@ class StockRepository extends EntityRepository
         }
         return $stockSymbols;
     }
+
+    public function numberOfRows()
+    {
+        return $this->createQueryBuilder('s')
+            ->select('COUNT(s)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

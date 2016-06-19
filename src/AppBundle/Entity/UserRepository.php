@@ -6,12 +6,12 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
-class PortfolioRepository extends EntityRepository
+class UserRepository extends EntityRepository
 {
     public function numberOfRows()
     {
-        return $this->createQueryBuilder('p')
-            ->select('COUNT(p)')
+        return $this->createQueryBuilder('u')
+            ->select('COUNT(u)')
             ->getQuery()
             ->getSingleScalarResult();
     }
