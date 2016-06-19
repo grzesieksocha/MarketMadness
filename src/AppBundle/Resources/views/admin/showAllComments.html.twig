@@ -1,0 +1,11 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        {% include('@App/admin/_adminSideBar.html.twig') %}
+        <div class="col-md-8">
+            {% include('@App/admin/_commentsTable.html.twig') %}
+        </div>
+    </div>
+
+{% endblock %}

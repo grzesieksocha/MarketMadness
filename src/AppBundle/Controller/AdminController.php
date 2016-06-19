@@ -47,4 +47,43 @@ class AdminController extends Controller
 
         return ['form' => $form->createView()];
     }
+
+    /**
+     * @Route("/showUsers", name="showAllUsers")
+     * @Template("@App/admin/showAllUsers.html.twig")
+     */
+    public function showAllUsersAction()
+    {
+        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAll();
+        dump($users);
+        return ['users' => $users];
+    }
+
+    /**
+     * @Route("/showPortfolios", name="showAllPortfolios")
+     * @Template("@App/admin/showAllPortfolios.html.twig")
+     */
+    public function showAllPortfoliosAction()
+    {
+        $portfolios = $this->getDoctrine()->getRepository('AppBundle:Portfolio')->findAll();
+        return ['portfolios' => $portfolios];
+    }
+
+    /**
+     * @Route("/showTransactions", name="showAllTransactions")
+     * @Template("@App/admin/showAllTransactions.html.twig")
+     */
+    public function showAllTransactionsAction()
+    {
+        $transactions = $this->getDoctrine()->getRepository('AppBundle:Transaction')->findAll();
+        return ['transactions' => $transactions];
+    }
+
+    /**
+     * @Route("/showComments", name="showAllComments")
+     * @Template("@App/admin/showAllComments.html.twig")
+     */
+    public function showAllCommentsAction()
+    {
+    }
 }

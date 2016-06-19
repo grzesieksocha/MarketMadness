@@ -1,0 +1,21 @@
+ <h3 class="text-center">Active users</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th class="text-center">Name</th>
+            <th class="text-center">E-mail</th>
+            <th class="text-center">Role</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td class="text-center">{{ user.username }}</td>
+                <td class="text-center">{{ user.email }}</td>
+                <td class="text-center">
+                    {% if user.roles[0] == 'ROLE_ADMIN' %}
+                        ADMIN
+                    {% else %}
+                        USER
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>

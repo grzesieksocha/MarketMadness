@@ -1,0 +1,31 @@
+ <h3 class="text-center">List of transactions</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th class="text-center">Owner</th>
+            <th class="text-center">Portfolio</th>
+            <th class="text-center">Type</th>
+            <th class="text-center">Date</th>
+            <th class="text-center">Security</th>
+            <th class="text-center">Quantity</th>
+            <th class="text-center">Price</th>
+            <th class="text-center">Shared?</th>
+        </tr>
+        {% for transaction in transactions %}
+            <tr>
+                <td class="text-center">{{ transaction.portfolio.user.username }}</td>
+                <td class="text-center">{{ transaction.portfolio.name }}</td>
+                <td class="text-center">{{ transaction.transactionType }}</td>
+                <td class="text-center">{{ transaction.date|date }}</td>
+                <td class="text-center">{{ transaction.stockSymbol }}</td>
+                <td class="text-center">{{ transaction.stockQuantity }}</td>
+                <td class="text-center">{{ transaction.stockPrice|number_format(2) }}$</td>
+                <td class="text-center">
+                    {% if transaction.isShared %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
