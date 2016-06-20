@@ -4,9 +4,11 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @UniqueEntity("name")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\PortfolioRepository")
  * @ORM\Table(name="portfolio")
  */
